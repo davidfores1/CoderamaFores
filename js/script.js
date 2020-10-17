@@ -38,10 +38,16 @@ class Memorama {
             }
         }
 
-        console.log(this.totalTarjetas);
+        this.numeroTarjetas = this.totalTarjetas.length;
+
+        let html = '';
+        this.totalTarjetas.forEach(card => {
+            html += `<div class = "tarjeta">
+                     <img class="tarjeta-img" src=${card.src} alt = "Imagen memorama">
+                    </div>`
+        })
+        this.$contenedorTarjetas.innerHTML = html;
     }
-
-
 
 }
 
