@@ -47,6 +47,37 @@ class Memorama {
                     </div>`
         })
         this.$contenedorTarjetas.innerHTML = html;
+        this.comiezaJuego();
+    }
+
+    comiezaJuego() {
+        const tarjetas = document.querySelectorAll('.tarjeta');
+        tarjetas.forEach(tarjeta => {
+            tarjeta.addEventListener('click', e => {
+                this.clickTarjeta(e)
+            })
+        })
+    }
+
+    clickTarjeta(e) {
+
+        this.efectoVoltearTarjeta(e);
+        let sourceImage = e.target.childNodes[1].attributes[1].value;
+        this.verificadorTarjetas.push(sourceImage);
+
+        let tarjeta = e.target;
+        this.agregadorTarjetas.unshift(tarjeta);
+        this.comparadorTarjetas();
+    }
+
+    efectoVoltearTarjeta(e) {
+        e.target.style.backgroundImage = 'none'
+        e.target.style.backgroundColor = 'white'
+        e.target.childNodes[1].style.display = 'block'
+    }
+
+    comparadorTarjetas() {
+
     }
 
 }
