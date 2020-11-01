@@ -76,8 +76,35 @@ class Memorama {
         e.target.childNodes[1].style.display = 'block'
     }
 
-    comparadorTarjetas() {
+    fijarParAcertado(arrTarjetasAcertadas) {
+        arrTarjetasAcertadas.forEach(tarjeta => {
+            tarjeta.classList.add('acertada');
+            this.imagenesCorrectas.push(tarjeta);
+        })
+    }
 
+    reversoTarjetas(arrTarjetas) {
+        arrTarjetas.forEach(tarejeta => {
+            setTimeout(() => {
+                tarejeta.style.backgroundImage = 'url(../img/cover.jpg)';
+                tarejeta.childNodes[1].style.display = 'none';
+            }, 1000)
+
+        })
+
+    }
+
+    comparadorTarjetas() {
+        if (this.verificadorTarjetas.length == 2) {
+            if (this.verificadorTarjetas[0] === this.verificadorTarjetas[1]) {
+                this.fijarParAcertado(this.agregadorTarjetas);
+            } else {
+                this.reversoTarjetas(this.agregadorTarjetas);
+                this.errores++;
+            }
+            this.verificadorTarjetas.splice(0);
+            this.agregadorTarjetas.splice(0);
+        }
     }
 
 }
