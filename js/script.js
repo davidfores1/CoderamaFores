@@ -5,7 +5,7 @@ class Memorama {
         this.totalTarjetas = [];
         this.numeroTarjetas = 0;
         this.verificadorTarjetas = []
-        this.error = 0;
+        this.errores = 0;
         this.nivelDificulta = '';
         this.imagenesCorrectas = [];
         this.agregadorTarjetas = [];
@@ -14,7 +14,8 @@ class Memorama {
         this.$contenedorTarjetas = document.querySelector('.contenedor-tarjetas');
         this.$pantallaBloqueada = document.querySelector('.pantalla-bloqueada');
         this.$mensaje = document.querySelector('h2.mensaje');
-        //Llamado a los eventos
+        this.$errorContenedor = document.createElement('div')
+            //Llamado a los eventos
         this.eventos();
 
     }
@@ -48,6 +49,7 @@ class Memorama {
         })
         this.$contenedorTarjetas.innerHTML = html;
         this.comiezaJuego();
+        this.contenedorError();
     }
 
     comiezaJuego() {
@@ -102,6 +104,8 @@ class Memorama {
             } else {
                 this.reversoTarjetas(this.agregadorTarjetas);
                 this.errores++;
+                this.incrementadorError();
+                this.derrotaJuego();
             }
             this.verificadorTarjetas.splice(0);
             this.agregadorTarjetas.splice(0);
@@ -120,7 +124,29 @@ class Memorama {
             }, 4000);
         }
     }
-}
 
+    derrotaJuego() {
+        if (this.errores === 5) {
+            setTimeout(() => {
+                this.$pantallaBloqueada.style.display = 'block';
+            }, 1000)
+
+            setTimeout(() => {
+                location.reload();
+            }, 4000)
+        }
+    }
+
+    incrementadorError() {
+        this.$errorContenedor.innerText = `Errores: ${this.errores}`;
+    }
+
+    contenedorError() {
+        this.$errorContenedor.classList.add('error');
+        this.incrementadorError();
+        this.$contenedorGeneral.appendChild(this.$errorContenedor);
+    }
+
+}
 
 new Memorama();
