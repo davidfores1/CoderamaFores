@@ -71,15 +71,16 @@ class Memorama {
     }
 
     efectoVoltearTarjeta(e) {
-        e.target.style.backgroundImage = 'none'
-        e.target.style.backgroundColor = 'white'
-        e.target.childNodes[1].style.display = 'block'
+        e.target.style.backgroundImage = 'none';
+        e.target.style.backgroundColor = 'white';
+        e.target.childNodes[1].style.display = 'block';
     }
 
     fijarParAcertado(arrTarjetasAcertadas) {
         arrTarjetasAcertadas.forEach(tarjeta => {
             tarjeta.classList.add('acertada');
             this.imagenesCorrectas.push(tarjeta);
+            this.victoriaJuego();
         })
     }
 
@@ -107,6 +108,19 @@ class Memorama {
         }
     }
 
+    victoriaJuego() {
+
+        if (this.imagenesCorrectas.length === this.numeroTarjetas) {
+            setTimeout(() => {
+                this.$pantallaBloqueada.style.display = 'block';
+                this.$mensaje.innerText = '¡Felicidades! Has ganado el juego';
+            }, 1000);
+            setTimeout(() => {
+                location.reload()
+            }, 4000);
+        }
+    }
 }
+
 
 new Memorama();
