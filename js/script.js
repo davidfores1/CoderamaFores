@@ -6,25 +6,53 @@ class Memorama {
         this.numeroTarjetas = 0;
         this.verificadorTarjetas = []
         this.errores = 0;
-        this.nivelDificulta = '';
+        this.nivelDificultad = '';
         this.imagenesCorrectas = [];
         this.agregadorTarjetas = [];
+        this.numeroIntentos = 0;
 
         this.$contenedorGeneral = document.querySelector('.contenedor-general');
+        this.$titulo2 = document.querySelector('.titulo2');
         this.$contenedorTarjetas = document.querySelector('.contenedor-tarjetas');
         this.$pantallaBloqueada = document.querySelector('.pantalla-bloqueada');
         this.$mensaje = document.querySelector('h2.mensaje');
-        this.$errorContenedor = document.createElement('div')
-            //Llamado a los eventos
+        this.$errorContenedor = document.createElement('h2');
+        this.$nivelDificultad = document.createElement('h2');
+        //Llamado a los eventos
+
         this.eventos();
 
     }
 
     eventos() {
         window.addEventListener('DOMContentLoaded', () => {
+            this.seleccionDificultad()
             this.cargarPantalla();
-
+            window.addEventListener('contextmenu', e => {
+                e.preventDefault();
+            }, false)
         })
+    }
+
+    seleccionDificultad() {
+
+        const mensaje = prompt('            **************** Selecione Número de dificultad ***************' +
+            '\nFácil = 1 - Intentos: 8\nIntermedio = 2 - Intentos: 6 \nDifícil = 3 - Intentos: 4')
+
+        if (mensaje === '1') {
+            this.numeroIntentos = 8;
+            this.nivelDificultad = 'Fácil';
+        } else if (mensaje === '2') {
+            this.numeroIntentos = 6;
+            this.nivelDificultad = 'Intermedio';
+        } else if (mensaje === '3') {
+            this.numeroIntentos = 4;
+            this.nivelDificultad = 'Difícil';
+        } else {
+            this.numeroIntentos = 5;
+            this.nivelDificultad = 'Intermedio';
+        }
+
     }
 
     async cargarPantalla() {
@@ -50,13 +78,17 @@ class Memorama {
         this.$contenedorTarjetas.innerHTML = html;
         this.comiezaJuego();
         this.contenedorError();
+        this.mensajeIntentos();
     }
 
     comiezaJuego() {
         const tarjetas = document.querySelectorAll('.tarjeta');
         tarjetas.forEach(tarjeta => {
             tarjeta.addEventListener('click', e => {
-                this.clickTarjeta(e)
+
+                if (!e.target.classList.contains('acertada' && !e.target.classList.contains('tarjeta-img'))) {
+                    this.clickTarjeta(e)
+                }
             })
         })
     }
@@ -121,19 +153,19 @@ class Memorama {
             }, 1000);
             setTimeout(() => {
                 location.reload()
-            }, 4000);
+            }, 3000);
         }
     }
 
     derrotaJuego() {
-        if (this.errores === 5) {
+        if (this.errores === this.numeroIntentos) {
             setTimeout(() => {
                 this.$pantallaBloqueada.style.display = 'block';
             }, 1000)
 
             setTimeout(() => {
                 location.reload();
-            }, 4000)
+            }, 3000)
         }
     }
 
@@ -142,9 +174,15 @@ class Memorama {
     }
 
     contenedorError() {
-        this.$errorContenedor.classList.add('error');
+        this.$errorContenedor.classList.add('titulo2');
         this.incrementadorError();
-        this.$contenedorGeneral.appendChild(this.$errorContenedor);
+        this.$titulo2.appendChild(this.$errorContenedor);
+    }
+
+    mensajeIntentos() {
+        this.$nivelDificultad.classList.add('titulo2');
+        this.$nivelDificultad.innerHTML = `Nivel: ${this.nivelDificultad}`;
+        this.$titulo2.appendChild(this.$nivelDificultad);
     }
 
 }
